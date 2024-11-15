@@ -1,1 +1,1 @@
-# esphome-hlk-ld2450
+# ESPHome HiLink HLK-LD2450
