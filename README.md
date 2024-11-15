@@ -1,0 +1,1 @@
+# esphome-hlk-ld2450
