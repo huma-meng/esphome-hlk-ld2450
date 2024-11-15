@@ -9,6 +9,9 @@ This is an external ESPHome component to add a HLK-LD2450 sensor to a ESPHome se
  - Sensor housing (not neccesery, but ready if you want to use it)
 
 ## Build
+ - print files
+ - hardware für aufbau
+ - evtl. noch umbauen für andere montage
 
 ## Setup
  - Install a ESPHome setup
@@ -28,7 +31,18 @@ This is an external ESPHome component to add a HLK-LD2450 sensor to a ESPHome se
 ## Configuration
 ### Sensor
 
-### Zones
+### Room
+  Raum Eckpunkte (unbegrenzt viele)
+  dafür eigene entität (belegt/bewegung/still)
+  raum counter (wie viele personen im raum)
 
+### Zones
+  Zonen Eckpunkte
+  dafür eigene entität (belegt/bewegung/still)
+  zonen counter (wie viele personen in zone)
 
 ## Troubleshooting
+  RX TX kabel richtig?
+  Spannungsversorgung ausreichend? (5V)
+  UART memory erhöhen
+  
