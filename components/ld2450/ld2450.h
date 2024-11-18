@@ -36,6 +36,9 @@ private:
 
 
 private:
+    // Debug
+    unsigned long last_time = 0;
+
     // LD2450 specific
     bool sensor_connected = false;
 
