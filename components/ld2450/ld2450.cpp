@@ -12,7 +12,7 @@ namespace esphome::ld2450
 
     void LD2450::send_cmd(uint8_t *cmd, const uint8_t *cmd_value, int cmd_value_length)
     {
-        /*
+
         // Frame header
         uint8_t frame_header[4] = { 0xFD, 0xFC, 0xFB, 0xFA };
         this->write_array(frame_header, 4);
@@ -40,9 +40,8 @@ namespace esphome::ld2450
         this->write_array(frame_end, 4);
         
         this->flush();
-        */
 
-
+        /*
         // UART frame data
         std::vector<uint8_t> frame;
 
@@ -65,8 +64,9 @@ namespace esphome::ld2450
         
         // End
         frame.insert(frame.end(), { 0x04, 0x03, 0x02, 0x01 });
+        */
 
-
+        /*
         // ----- DEBUGGING: UART data send debug ----------------------------------------------
         ESP_LOGD("LD2450", "Sent UART data: ");
         for (size_t i = 0; i < uart_data_lenght; i++)
@@ -74,7 +74,8 @@ namespace esphome::ld2450
             ESP_LOGD("LD2450", "0x%02X ", data[i]);
         }
         ESP_LOGD("LD2450", "(%d bytes)", uart_data_lenght);
-        // ------------------------------------------------------------------------------------      
+        // ------------------------------------------------------------------------------------
+        */
     }
 
 

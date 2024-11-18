@@ -28,7 +28,7 @@ private:
 
 
 
-}
+};
 
 
 } // namespace esphome::ld2450
