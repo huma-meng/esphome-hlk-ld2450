@@ -1,0 +1,28 @@
+external_components:
+  - source:
+      type: git
+      url: https://github.com/huma-meng/esphome-hlk-ld2450
+      ref: main
+    components: [ ld2450 ]
+    refresh: 0s
+
+uart:
+  id: uart_bus
+  tx_pin: 
+    number: GPIO0
+    mode:
+      input: true
+      pullup: true
+  rx_pin: 
+    number: GPIO1
+    mode:
+      input: true
+      pullup: true
+  baud_rate: 256000
+  rx_buffer_size: 512
+  parity: NONE
+  stop_bits: 1
+  data_bits: 8
+
+ld2450:
+  uart_id: uart_bus
