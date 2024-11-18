@@ -10,7 +10,7 @@ namespace esphome::ld2450
 
     void LD2450::loop()
     {
-        if (millis() - last_time >= 5000)
+        if (millis() - last_time >= 10000)
         {
             // this->get_sensor_infos();
 
