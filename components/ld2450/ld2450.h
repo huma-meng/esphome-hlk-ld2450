@@ -30,8 +30,13 @@ public:
 
 
 private:
+    // Debug
+    void print_uart(bool data_send, const std::vector<uint8_t> &data);
+
     // LD2450 specific
     void send_cmd(uint8_t *cmd, const uint8_t *cmd_value = nullptr);
+    bool get_ack(unsigned long timeout);
+
     void set_config_mode(bool enable);
     void set_baud_rate(BaudRate baud_rate);
     void set_multi_target_tracking(bool enable);

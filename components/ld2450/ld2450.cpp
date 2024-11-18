@@ -14,11 +14,37 @@ namespace esphome::ld2450
         {
             // this->get_sensor_infos();
 
-            this->set_timeout(1000, [this]() { this->get_sensor_infos(); });
+            this->set_timeout(1000, [this]() { this->get_bluetooth_mac(); });
 
             last_time = millis();
         }   
     }
+
+
+    // ----- DEBUG: UART data send debug --------------------------------------------------
+    void LD2450::print_uart(bool data_send, const std::vector<uint8_t> &uart_data)
+    {
+        std::string uart_data_str;
+        for (size_t i = 0; i < uart_data.size(); ++i)
+        {
+            char byte_str[5];  // "0x" + 2 hex digits + null terminator
+            snprintf(byte_str, sizeof(byte_str), "0x%02X", uart_data[i]);
+            uart_data_str += byte_str;
+            if (i < uart_data.size() - 1)
+            {
+                uart_data_str += " ";
+            }
+        }
+        if (data_send)
+        {
+            ESP_LOGD("LD2450", "Sending UART frame: %s", uart_data_str.c_str());
+        }
+        else
+        {
+            ESP_LOGD("LD2450", "Receiving UART frame: %s", uart_data_str.c_str());
+        }
+    }
+    // ------------------------------------------------------------------------------------
 
 
 
@@ -58,22 +84,46 @@ namespace esphome::ld2450
         }
         this->flush();
 
+        // --- DEBUG -----------------------
+        this->print_uart(true, uart_buffer);
+        // ---------------------------------
+    }
 
-        // ----- DEBUG: UART data send debug --------------------------------------------------
-        std::string uart_frame_str;
-        for (size_t i = 0; i < uart_buffer.size(); ++i)
+    // TODO Expected response for true/false readback
+    bool LD2450::get_ack()
+    {
+        unsigned long start_time = millis();
+        std::vector<uint8_t> uart_buffer;
+        while (millis() - start_time < uart_timeout)
         {
-            char byte_str[5];  // "0x" + 2 hex digits + null terminator
-            snprintf(byte_str, sizeof(byte_str), "0x%02X", uart_buffer[i]);
-            uart_frame_str += byte_str;
-            if (i < uart_buffer.size() - 1)
+            if (this->available()) 
             {
-                uart_frame_str += " ";
+                uint8_t byte = this->read();
+                received_data.push_back(byte);          
+                if (received_data.size() >= 8)
+                {
+                    if (memcmp(received_data.data(), radar_ack_header, 4) == 0)
+                    {
+                        if (memcmp(&received_data[received_data.size() - 4], radar_ack_end, 4) == 0)
+                        {
+                            ESP_LOGD("LD2450", "Received Radar ACK response.");
+                            // --- DEBUG -----------------------
+                            this->print_uart(true, uart_buffer);
+                            // ---------------------------------
+                            return true;
+                        }
+                    }
+                }
+            }
+            if (millis() - start_time >= uart_timeout) {
+                ESP_LOGW("LD2450", "Sensor timeout... Is sensor connected?");
+                break;
             }
         }
-        ESP_LOGD("LD2450", "Sending UART frame: %s", uart_frame_str.c_str());
-        // ------------------------------------------------------------------------------------
+        return false;
     }
+
+
 
 
     void LD2450::set_config_mode(bool enable)
@@ -109,14 +159,14 @@ namespace esphome::ld2450
     {
         uint8_t cmd[2] = { 0x91, 0x00 };
         this->send_cmd(cmd);
-        // TODO read back the ACK
+        this->get_ack();
     }
 
     void LD2450::get_firmware_version()
     {
         uint8_t cmd[2] = { 0xA0, 0x00 };
         this->send_cmd(cmd);
-        // TODO read back the ACK
+        this->get_ack();
     }
 
     void LD2450::get_bluetooth_mac()
@@ -124,7 +174,7 @@ namespace esphome::ld2450
         uint8_t cmd[2] = { 0xA5, 0x00 };
         uint8_t cmd_value[2] = { 0x01, 0x00 };
         this->send_cmd(cmd, cmd_value);
-        // TODO read back the ACK
+        this->get_ack();
     }
 
 
@@ -139,7 +189,7 @@ namespace esphome::ld2450
     {
         uint8_t cmd[2] = { 0xA2, 0x00 };
         this->send_cmd(cmd);
-        // TODO check ack then reboot
+        this->get_ack();
         this->sensor_reboot();
     }
 
