@@ -1,9 +1,8 @@
 import esphome.codegen as cg
 import esphome.config_validation as cv
-from esphome import automation
+
 from esphome.components import uart
-from esphome.components.uart import UARTComponent
-from esphome.const import CONF_ID
+from esphome.const import CONF_ID, CONF_PORT, CONF_BAUD_RATE
 
 
 DEPENDENCIES = ["uart"]
@@ -14,14 +13,10 @@ ld2450_ns = cg.esphome_ns.namespace("ld2450")
 LD2450 = ld2450_ns.class_("LD2450", cg.Component, uart.UARTDevice)
 
 
-CONFIG_SCHEMA = cv.All(
-    uart.UART_DEVICE_SCHEMA.extend(
-        {
-            cv.GenerateID(): cv.declare_id(LD2450),
-            cv.Required(UART_ID): cv.use_id(UARTComponent),
-        }
-    )
-)
+CONFIG_SCHEMA = cv.Schema({
+    cv.GenerateID(): cv.declare_id(LD2450),
+}).extend(cv.COMPONENT_SCHEMA).extend(uart.UART_DEVICE_SCHEMA)
+
 
 
 def to_code(config):
