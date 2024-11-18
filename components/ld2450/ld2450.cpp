@@ -23,7 +23,7 @@ namespace esphome::ld2450
         {
             length += cmd_value_length;
         }
-        uint8_t frame_data_length[2] = { length & 0xFF, lenght >> 8 };
+        uint8_t frame_data_length[2] = { length & 0xFF, length >> 8 };
         this->write_array(frame_data_length, 2);
 
         // In-Frame data
