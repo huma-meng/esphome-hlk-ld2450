@@ -23,7 +23,7 @@ namespace esphome::ld2450
         {
             length += cmd_value_length;
         }
-        uint8_t frame_data_length[2] = { lowByte(length), highByte(length) };
+        uint8_t frame_data_length[2] = { lowbyte(length), highbyte(length) };
         this->write_array(frame_data_length, 2);
 
         // In-Frame data
@@ -81,9 +81,10 @@ namespace esphome::ld2450
 
     void LD2450::set_config_mode(bool enable)
     {
-        uint8_t cmd[2] = { enable ? 0xFF : 0xFE, 0x00 };
+        // uint8_t cmd[2] = { enable ? 0xFF : 0xFE, 0x00 };
+        uint8_t cmd[2] = { 0xFF, 0x00 };
         uint8_t cmd_value[2] = { 0x01, 0x00 };
-        this->send_cmd(cmd, enable ? cmd_value : nullptr, 2);        
+        this->send_cmd(cmd, enable ? cmd_value : nullptr, enable ? 2 : 0);       
     }
 
 
