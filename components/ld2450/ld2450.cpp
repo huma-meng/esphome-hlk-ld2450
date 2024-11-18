@@ -101,16 +101,31 @@ namespace esphome::ld2450
             {
                 uint8_t byte = this->read();
                 uart_buffer.push_back(byte);
+
+                // --- Debug-Ausgabe für empfangene Bytes ---
+                ESP_LOGD("LD2450", "Received byte: 0x%02X", byte);
                 
                 // --- DEBUG -----------------------
                 this->print_uart(false, uart_buffer);
                 // ---------------------------------
             }
+            else {
+                // Wenn keine Daten empfangen wurden
+                ESP_LOGD("LD2450", "No data available in UART buffer.");
+            }
+
             if (millis() - start_time >= uart_timeout) {
                 ESP_LOGW("LD2450", "Sensor timeout... Is sensor connected?");
                 break;
             }
         }
+
+        // Debug-Ausgabe am Ende, falls Daten empfangen wurden
+        if (!uart_buffer.empty()) {
+            ESP_LOGD("LD2450", "Final received UART data: ");
+            this->print_uart(false, uart_buffer);
+        }
+
         return !uart_buffer.empty();
     }
 
