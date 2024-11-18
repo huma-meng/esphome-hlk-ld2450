@@ -63,7 +63,7 @@ namespace esphome::ld2450
     {
         uint8_t cmd[2] = { enable ? 0xFF : 0xFE, 0x00 };
         uint8_t cmd_value[2] = { 0x01, 0x00 };
-        this->send_cmd(cmd, enable ? cmd_value);       
+        this->send_cmd(cmd, enable ? cmd_value : nullptr);       
     }
 
 
