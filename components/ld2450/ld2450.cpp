@@ -10,16 +10,16 @@ namespace esphome::ld2450
 
     void LD2450::loop()
     {
-        // if (millis() - last_time >= 10000)
-        // {
-        //     // this->get_sensor_infos();
+        if (millis() - last_time >= 10000)
+        {
+            // this->get_sensor_infos();
 
-        //     // this->set_timeout(1000, [this]() { this->set_config_mode(true); });
-        //     this->set_config_mode(true);
+            // this->set_timeout(1000, [this]() { this->set_config_mode(true); });
+            this->set_config_mode(true);
 
-        //     last_time = millis();
-        // }
-        
+            last_time = millis();
+        }
+
 
         if (this->available()) 
         {
@@ -33,7 +33,7 @@ namespace esphome::ld2450
             }
 
             // Debug-Ausgabe der empfangenen UART-Daten
-            ESP_LOGD("LD2450", "Received UART frame: ");
+            // ESP_LOGD("LD2450", "Received UART frame: ");
             this->print_uart(false, uart_buffer);  // Ausgabe des gesamten Buffers
         }
         
@@ -105,10 +105,11 @@ namespace esphome::ld2450
         this->flush();
 
         // --- DEBUG -----------------------
-        this->print_uart(false, uart_buffer);
+        this->print_uart(true, uart_buffer);
         // ---------------------------------
     }
 
+    /*
     // TODO Expected response for true/false readback
     bool LD2450::get_ack()
     {
@@ -150,7 +151,7 @@ namespace esphome::ld2450
             return true;
         }
     }
-
+    */
 
 
 

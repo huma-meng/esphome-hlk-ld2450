@@ -35,7 +35,7 @@ private:
 
     // LD2450 specific
     void send_cmd(uint8_t *cmd, const uint8_t *cmd_value = nullptr);
-    bool get_ack();
+    // bool get_ack();
 
     void set_config_mode(bool enable);
     void set_baud_rate(BaudRate baud_rate);
