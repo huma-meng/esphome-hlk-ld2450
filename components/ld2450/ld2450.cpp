@@ -5,7 +5,7 @@ namespace esphome::ld2450
 
     void LD2450::setup()
     {
-        
+        this->sensor_reboot();
     }
 
     void LD2450::loop()
@@ -15,6 +15,7 @@ namespace esphome::ld2450
             // this->get_sensor_infos();
 
             this->set_timeout(1000, [this]() { this->set_config_mode(true); });
+            this->set_config_mode(true);
 
             last_time = millis();
         }   
