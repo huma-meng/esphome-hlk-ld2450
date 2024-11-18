@@ -14,7 +14,7 @@ namespace esphome::ld2450
         {
             // this->get_sensor_infos();
 
-            this->set_timeout(1000, [this]() { this->get_bluetooth_mac(); });
+            this->set_timeout(1000, [this]() { his->set_config_mode(true); });
 
             last_time = millis();
         }   
@@ -135,6 +135,7 @@ namespace esphome::ld2450
         uint8_t cmd_value[2] = { 0x01, 0x00 };
         this->send_cmd(cmd, enable ? cmd_value : nullptr);       
     }
+
 
     void LD2450::set_baud_rate(BaudRate baud_rate)
     {
