@@ -76,7 +76,7 @@ namespace esphome::ld2450
         {
             ESP_LOGD("LD2450", "0x%02X ", data[i]);
         }
-        ESP_LOGD("LD2450", "(%d bytes)", uart_data_lenght);
+        ESP_LOGD("LD2450", "(%i bytes)", data_lenght);
         // ------------------------------------------------------------------------------------
     }
 
