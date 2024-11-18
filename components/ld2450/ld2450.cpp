@@ -189,14 +189,14 @@ namespace esphome::ld2450
     {
         uint8_t cmd[2] = { 0x91, 0x00 };
         this->send_cmd(cmd);
-        this->get_ack();
+        // this->get_ack();
     }
 
     void LD2450::get_firmware_version()
     {
         uint8_t cmd[2] = { 0xA0, 0x00 };
         this->send_cmd(cmd);
-        this->get_ack();
+        // this->get_ack();
     }
 
     void LD2450::get_bluetooth_mac()
@@ -205,7 +205,7 @@ namespace esphome::ld2450
         uint8_t cmd_value[2] = { 0x01, 0x00 };
         this->set_config_mode(true);
         this->send_cmd(cmd, cmd_value);
-        this->get_ack();
+        // this->get_ack();
         this->set_config_mode(false);
     }
 
@@ -221,7 +221,7 @@ namespace esphome::ld2450
     {
         uint8_t cmd[2] = { 0xA2, 0x00 };
         this->send_cmd(cmd);
-        this->get_ack();
+        // this->get_ack();
         this->sensor_reboot();
     }
 
