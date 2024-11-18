@@ -9,6 +9,18 @@
 namespace esphome::ld2450
 {
 
+enum BaudRate
+{
+    9600   = 0x01,
+    19200  = 0x02,
+    38400  = 0x03,
+    57600  = 0x04,
+    115200 = 0x05,
+    230400 = 0x06,
+    256000 = 0x07,
+    460800 = 0x08,
+};
+
 class LD2450 : public uart::UARTDevice, public Component
 {
     
@@ -21,7 +33,7 @@ private:
     // LD2450 specific
     void send_cmd(uint8_t *cmd, const uint8_t *cmd_value = nullptr);
     void set_config_mode(bool enable);
-    void set_baud_rate(uint16_t baud_rate);
+    void set_baud_rate(BaudRate baud_rate);
     void set_multi_target_tracking(bool enable);
     void set_bluetooth(bool enable);
     void get_tracking_mode();
