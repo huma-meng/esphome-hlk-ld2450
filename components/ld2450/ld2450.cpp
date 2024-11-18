@@ -5,7 +5,7 @@ namespace esphome::ld2450
 
     void LD2450::setup()
     {
-        // this->set_config_mode(true);
+        this->set_config_mode(true);
     }
 
 
@@ -66,16 +66,18 @@ namespace esphome::ld2450
         frame.insert(frame.end(), { 0x04, 0x03, 0x02, 0x01 });
         */
 
-        /*
+        
         // ----- DEBUGGING: UART data send debug ----------------------------------------------
+        uint8_t data[4] = { 0x00, 0x01, 0x02, 0x03 };
+        int data_lenght = 4;
+
         ESP_LOGD("LD2450", "Sent UART data: ");
-        for (size_t i = 0; i < uart_data_lenght; i++)
+        for (int i = 0; i < data_lenght; i++)
         {
             ESP_LOGD("LD2450", "0x%02X ", data[i]);
         }
         ESP_LOGD("LD2450", "(%d bytes)", uart_data_lenght);
         // ------------------------------------------------------------------------------------
-        */
     }
 
 
