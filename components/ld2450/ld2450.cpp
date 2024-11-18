@@ -5,88 +5,65 @@ namespace esphome::ld2450
 
     void LD2450::setup()
     {
-        this->set_config_mode(true);
+        // this->set_config_mode(true);
+    }
+
+    void LD2450::loop()
+    {
+        // this->set_config_mode(true);
     }
 
 
 
-    void LD2450::send_cmd(uint8_t *cmd, const uint8_t *cmd_value, int cmd_value_length)
+    void LD2450::send_cmd(uint8_t *cmd, const uint8_t *cmd_value)
     {
-
-        // Frame header
-        uint8_t frame_header[4] = { 0xFD, 0xFC, 0xFB, 0xFA };
-        this->write_array(frame_header, 4);
-
-        // In-Frame data length
-        int length = 2;
-        if (cmd_value != nullptr)
-        {
-            length += cmd_value_length;
-        }
-        uint8_t frame_data_length[2] = { length & 0xFF, length >> 8 };
-        this->write_array(frame_data_length, 2);
-
-        // In-Frame data
-        if (cmd_value != nullptr)
-        {
-            for (int i = 0; i < cmd_value_length; i++)
-            {
-                write_byte(cmd_value[i]);
-            }
-        }
-
-        // Frame end
-        uint8_t frame_end[4] = { 0x04, 0x03, 0x02, 0x01 };
-        this->write_array(frame_end, 4);
-        
-        this->flush();
-
-        /*
-        // UART frame data
-        std::vector<uint8_t> frame;
+        // UART buffer
+        std::vector<uint8_t> uart_buffer;
 
         // Header
-        frame.insert(frame.end(), { 0xFD, 0xFC, 0xFB, 0xFA });
+        const uint8_t frame_header[4] = {0xFD, 0xFC, 0xFB, 0xFA};
+        uart_buffer.insert(uart_buffer.end(), std::begin(frame_header), std::end(frame_header));
 
-        // Data length
-        int lenght = 2 + (cmd_value != nullptr ? cmd_value_length : 0);
-        frame.push_back(length & 0xFF);         // Low byte
-        frame.push_back((lenght >> 8) & 0xFF);  // High byte
+        // Command length (2 bytes for command + 2 bytes for command value if present)
+        uint16_t cmd_length = 2 + (cmd_value ? 2 : 0);
+        uart_buffer.push_back(static_cast<uint8_t>(cmd_length & 0xFF)); // LSB
+        uart_buffer.push_back(static_cast<uint8_t>((cmd_length >> 8) & 0xFF)); // MSB
 
         // Command
-        frame.push_back(*cmd);
+        uart_buffer.push_back(cmd[0]);
+        uart_buffer.push_back(cmd[1]);
 
-        // Command value
-        if (cmd_value != nullptr)
+        // Command value (if present)
+        if (cmd_value)
         {
-            frame.insert(frame.end(), cmd_value, cmd_value_length);
+            uart_buffer.push_back(cmd_value[0]);
+            uart_buffer.push_back(cmd_value[1]);
         }
-        
+
         // End
-        frame.insert(frame.end(), { 0x04, 0x03, 0x02, 0x01 });
-        */
+        const uint8_t frame_end[4] = {0x04, 0x03, 0x02, 0x01};
+        uart_buffer.insert(uart_buffer.end(), std::begin(frame_end), std::end(frame_end));
 
-        
-        // ----- DEBUGGING: UART data send debug ----------------------------------------------
-        uint8_t data[4] = { 0x00, 0x01, 0x02, 0x03 };
-        int data_lenght = 4;
+        // Send UART frame
+        this->write(uart_buffer.data(), uart_buffer.size());
+        this->flush();
 
-        ESP_LOGD("LD2450", "Sent UART data: ");
-        for (int i = 0; i < data_lenght; i++)
+
+        // ----- DEBUG: UART data send debug --------------------------------------------------
+        ESP_LOGD("UART", "Sending UART frame:");
+        for (size_t i = 0; i < uart_buffer.size(); ++i)
         {
-            ESP_LOGD("LD2450", "0x%02X ", data[i]);
+            ESP_LOGD("UART", "0x%02X", uart_buffer[i]);
         }
-        ESP_LOGD("LD2450", "(%i bytes)", data_lenght);
         // ------------------------------------------------------------------------------------
     }
 
 
     void LD2450::set_config_mode(bool enable)
     {
-        // uint8_t cmd[2] = { enable ? 0xFF : 0xFE, 0x00 };
-        uint8_t cmd[2] = { 0xFF, 0x00 };
+        uint8_t cmd[2] = { enable ? 0xFF : 0xFE, 0x00 };
         uint8_t cmd_value[2] = { 0x01, 0x00 };
-        this->send_cmd(cmd, enable ? cmd_value : nullptr, enable ? 2 : 0);       
+        this->send_cmd(cmd, enable ? cmd_value);       
     }
 
 
