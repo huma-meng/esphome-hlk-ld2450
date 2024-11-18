@@ -11,6 +11,7 @@ namespace esphome::ld2450
 
 class LD2450 : public uart::UARTDevice, public Component
 {
+    
 public:
 
     void setup() override;

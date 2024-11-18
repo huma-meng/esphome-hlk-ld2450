@@ -5,7 +5,7 @@ namespace esphome::ld2450
 
     void LD2450::setup()
     {
-        this->set_config_mode(true);
+        // this->set_config_mode(true);
     }
 
 
