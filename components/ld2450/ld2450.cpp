@@ -92,6 +92,9 @@ namespace esphome::ld2450
     // TODO Expected response for true/false readback
     bool LD2450::get_ack()
     {
+        const uint8_t frame_header[4] = { 0xFD, 0xFC, 0xFB, 0xFA };
+        const uint8_t frame_end[4] = { 0x04, 0x03, 0x02, 0x01 };
+
         unsigned long start_time = millis();
         std::vector<uint8_t> uart_buffer;
         while (millis() - start_time < uart_timeout)
@@ -102,9 +105,9 @@ namespace esphome::ld2450
                 uart_buffer.push_back(byte);          
                 if (uart_buffer.size() >= 8)
                 {
-                    if (memcmp(uart_buffer.data(), radar_ack_header, 4) == 0)
+                    if (memcmp(uart_buffer.data(), frame_header, 4) == 0)
                     {
-                        if (memcmp(&uart_buffer[uart_buffer.size() - 4], radar_ack_end, 4) == 0)
+                        if (memcmp(&uart_buffer[uart_buffer.size() - 4], frame_end, 4) == 0)
                         {
                             ESP_LOGD("LD2450", "Received Radar ACK response.");
                             // --- DEBUG -----------------------
