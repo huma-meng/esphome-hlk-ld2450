@@ -16,16 +16,32 @@ public:
     void setup() override;
     void loop() override;
 
-private:
 
+private:
+    // LD2450 specific
     void send_cmd(uint8_t *cmd, const uint8_t *cmd_value);
+    void set_config_mode(bool enable);
+    void set_baud_rate(BaudRate baud_rate);
+    void set_multi_target_tracking(bool enable);
+    void set_bluetooth(bool enable);
+    void get_tracking_mode();
+    void get_firmware_version();
+    void get_bluetooth_mac();
+    void sensor_reboot();
+    void sensor_factory_reset();
+    // TODO zone filtering and setting
 
-    void set_config_mode(bool enable);  
+    // Component
+    void get_sensor_infos();
 
 
 private:
-    bool cmd_last_success_ = false;
+    // LD2450 specific
+    bool sensor_connected = false;
 
+    uint16_t uart_timeout = 1000;
+
+    uint8_t firmware_version_ = "";
 
 
 };

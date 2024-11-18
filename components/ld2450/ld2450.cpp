@@ -5,15 +5,12 @@ namespace esphome::ld2450
 
     void LD2450::setup()
     {
-        // this->set_config_mode(true);
+        this->get_sensor_infos();
     }
 
     void LD2450::loop()
     {
-        delay(1000);
-        set_config_mode(true);
-        delay(1000);
-        set_config_mode(false);
+
     }
 
 
@@ -79,5 +76,76 @@ namespace esphome::ld2450
         this->send_cmd(cmd, enable ? cmd_value : nullptr);       
     }
 
+    void LD2450::set_baud_rate(BaudRate baud_rate)
+    {
+        uint8_t cmd[2] = { 0xA1, 0x00 };
+        uint8_t cmd_value[2] = { 0x07, 0x00 };  // Baud rate = 256000
+        this->send_cmd(cmd, cmd_value);
+    }
+
+    void LD2450::set_multi_target_tracking(bool enable)
+    {
+        uint8_t cmd[2] = { static_cast<uint8_t>(enable ? 0x90 : 0x80), 0x00 };
+        this->send_cmd(cmd);
+    }
+
+    void LD2450::set_bluetooth(bool enable)
+    {
+        uint8_t cmd[2] = { 0xA4, 0x00 };
+        uint8_t cmd_value[2] = { static_cast<uint8_t>(enable ? 0x01 : 0x00), 0x00 };
+        this->send_cmd(cmd, cmd_value);
+    }
+
+
+
+    void LD2450::get_tracking_mode()
+    {
+        uint8_t cmd[2] = { 0x91, 0x00 };
+        this->send_cmd(cmd);
+        // TODO read back the ACK
+    }
+
+    void LD2450::get_firmware_version()
+    {
+        uint8_t cmd[2] = { 0xA0, 0x00 };
+        this->send_cmd(cmd);
+        // TODO read back the ACK
+    }
+
+    void LD2450::get_bluetooth_mac()
+    {
+        uint8_t cmd[2] = { 0xA5, 0x00 };
+        uint8_t cmd_value[2] = { 0x01, 0x00 };
+        this->send_cmd(cmd, cmd_value);
+        // TODO read back the ACK
+    }
+
+
+
+    void LD2450::sensor_reboot()
+    {
+        uint8_t cmd[2] = { 0xA3, 0x00 };
+        this->send_cmd(cmd);
+    }
+
+    void LD2450::sensor_factory_reset()
+    {
+        uint8_t cmd[2] = { 0xA2, 0x00 };
+        this->send_cmd(cmd);
+        // TODO check ack then reboot
+        this->sensor_reboot();
+    }
+
+
+
+
+
+
+    void LD2450::get_sensor_infos()
+    {
+        this->get_tracking_mode();
+        this->get_firmware_version();
+        this->get_bluetooth_mac();
+    }
 
 } // namespace esphome::ld2450
