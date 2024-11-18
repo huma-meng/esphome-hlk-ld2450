@@ -19,9 +19,9 @@ public:
 
 private:
     // LD2450 specific
-    void send_cmd(uint8_t *cmd, const uint8_t *cmd_value);
+    void send_cmd(uint8_t *cmd, const uint8_t *cmd_value = nullptr);
     void set_config_mode(bool enable);
-    void set_baud_rate(BaudRate baud_rate);
+    void set_baud_rate(uint16_t baud_rate);
     void set_multi_target_tracking(bool enable);
     void set_bluetooth(bool enable);
     void get_tracking_mode();

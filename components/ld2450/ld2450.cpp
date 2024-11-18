@@ -15,7 +15,7 @@ namespace esphome::ld2450
 
 
 
-    void LD2450::send_cmd(uint8_t *cmd, const uint8_t *cmd_value)
+    void LD2450::send_cmd(uint8_t *cmd, const uint8_t *cmd_value = nullptr)
     {
         // UART buffer
         std::vector<uint8_t> uart_buffer;
@@ -76,7 +76,7 @@ namespace esphome::ld2450
         this->send_cmd(cmd, enable ? cmd_value : nullptr);       
     }
 
-    void LD2450::set_baud_rate(BaudRate baud_rate)
+    void LD2450::set_baud_rate(uint16_t baud_rate)
     {
         uint8_t cmd[2] = { 0xA1, 0x00 };
         uint8_t cmd_value[2] = { 0x07, 0x00 };  // Baud rate = 256000
