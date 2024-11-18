@@ -15,7 +15,7 @@ namespace esphome::ld2450
 
 
 
-    void LD2450::send_cmd(uint8_t *cmd, const uint8_t *cmd_value = nullptr)
+    void LD2450::send_cmd(uint8_t *cmd, const uint8_t *cmd_value)
     {
         // UART buffer
         std::vector<uint8_t> uart_buffer;

@@ -41,7 +41,7 @@ private:
 
     uint16_t uart_timeout = 1000;
 
-    uint8_t firmware_version_ = "";
+    uint8_t firmware_version_ = 123;
 
 
 };
