@@ -20,7 +20,7 @@ namespace esphome::ld2450
                 });
             }
         #endif
-     
+
 
         this->set_timeout(1000, [this]()
         {
