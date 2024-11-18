@@ -54,12 +54,16 @@ namespace esphome::ld2450
         }
         this->flush();
 
+
         // ----- DEBUG: UART data send debug --------------------------------------------------
-        ESP_LOGD("UART", "Sending UART frame:");
+        std::string uart_frame_str;
         for (size_t i = 0; i < uart_buffer.size(); ++i)
         {
-            ESP_LOGD("UART", "0x%02X", uart_buffer[i]);
+            char byte_str[5];  // "0x" + 2 hex digits + null terminator
+            snprintf(byte_str, sizeof(byte_str), "0x%02X ", uart_buffer[i]);
+            uart_frame_str += byte_str;
         }
+        ESP_LOGD("LD2450", "Sending UART frame: %s", uart_frame_str.c_str());
         // ------------------------------------------------------------------------------------
     }
 
