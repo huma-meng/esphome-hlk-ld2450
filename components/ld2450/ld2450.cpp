@@ -60,8 +60,12 @@ namespace esphome::ld2450
         for (size_t i = 0; i < uart_buffer.size(); ++i)
         {
             char byte_str[5];  // "0x" + 2 hex digits + null terminator
-            snprintf(byte_str, sizeof(byte_str), "0x%02X ", uart_buffer[i]);
+            snprintf(byte_str, sizeof(byte_str), "0x%02X", uart_buffer[i]);
             uart_frame_str += byte_str;
+            if (i < uart_buffer.size() - 1)
+            {
+                uart_frame_str += " ";
+            }
         }
         ESP_LOGD("LD2450", "Sending UART frame: %s", uart_frame_str.c_str());
         // ------------------------------------------------------------------------------------
