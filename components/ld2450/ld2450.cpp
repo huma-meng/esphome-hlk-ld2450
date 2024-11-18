@@ -10,7 +10,10 @@ namespace esphome::ld2450
 
     void LD2450::loop()
     {
-        // this->set_config_mode(true);
+        delay(1000);
+        set_config_mode(true);
+        delay(1000);
+        set_config_mode(false);
     }
 
 
@@ -50,7 +53,6 @@ namespace esphome::ld2450
             this->write(uart_buffer[i]);
         }
         this->flush();
-
 
         // ----- DEBUG: UART data send debug --------------------------------------------------
         ESP_LOGD("UART", "Sending UART frame:");
