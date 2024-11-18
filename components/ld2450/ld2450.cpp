@@ -86,7 +86,7 @@ namespace esphome::ld2450
         this->flush();
 
         // --- DEBUG -----------------------
-        this->print_uart(true, uart_buffer);
+        this->print_uart(false, uart_buffer);
         // ---------------------------------
     }
 

@@ -59,7 +59,7 @@ private:
     // LD2450 specific
     bool sensor_connected = false;
 
-    uint16_t uart_timeout = 1000;
+    uint16_t uart_timeout = 500;
 
     uint8_t firmware_version_ = 123;
 
