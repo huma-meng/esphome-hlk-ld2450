@@ -5,12 +5,17 @@ namespace esphome::ld2450
 
     void LD2450::setup()
     {
-        this->get_sensor_infos();
+        
     }
 
     void LD2450::loop()
     {
-
+        if (!sensor_connected)
+        {
+            this->get_sensor_infos();
+            sensor_connected = true;
+        }
+        
     }
 
 
