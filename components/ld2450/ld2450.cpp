@@ -10,15 +10,34 @@ namespace esphome::ld2450
 
     void LD2450::loop()
     {
-        if (millis() - last_time >= 10000)
+        // if (millis() - last_time >= 10000)
+        // {
+        //     // this->get_sensor_infos();
+
+        //     // this->set_timeout(1000, [this]() { this->set_config_mode(true); });
+        //     this->set_config_mode(true);
+
+        //     last_time = millis();
+        // }
+        
+
+        if (this->available()) 
         {
-            // this->get_sensor_infos();
+            std::vector<uint8_t> uart_buffer;
+            
+            // Solange Daten empfangen werden
+            while (this->available()) 
+            {
+                uint8_t byte = this->read();  // Lese Byte aus UART
+                uart_buffer.push_back(byte);  // Füge Byte zum Buffer hinzu
+            }
 
-            // this->set_timeout(1000, [this]() { this->set_config_mode(true); });
-            this->set_config_mode(true);
+            // Debug-Ausgabe der empfangenen UART-Daten
+            ESP_LOGD("LD2450", "Received UART frame: ");
+            this->print_uart(false, uart_buffer);  // Ausgabe des gesamten Buffers
+        }
+        
 
-            last_time = millis();
-        }   
     }
 
 
@@ -183,8 +202,10 @@ namespace esphome::ld2450
     {
         uint8_t cmd[2] = { 0xA5, 0x00 };
         uint8_t cmd_value[2] = { 0x01, 0x00 };
+        this->set_config_mode(true);
         this->send_cmd(cmd, cmd_value);
         this->get_ack();
+        this->set_config_mode(false);
     }
 
 
