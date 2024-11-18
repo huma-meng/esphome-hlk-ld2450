@@ -11,14 +11,14 @@ namespace esphome::ld2450
 
 enum BaudRate
 {
-    9600   = 0x01,
-    19200  = 0x02,
-    38400  = 0x03,
-    57600  = 0x04,
-    115200 = 0x05,
-    230400 = 0x06,
-    256000 = 0x07,
-    460800 = 0x08,
+    BAUD_9600   = 0x01,
+    BAUD_19200  = 0x02,
+    BAUD_38400  = 0x03,
+    BAUD_57600  = 0x04,
+    BAUD_115200 = 0x05,
+    BAUD_230400 = 0x06,
+    BAUD_256000 = 0x07,
+    BAUD_460800 = 0x08,
 };
 
 class LD2450 : public uart::UARTDevice, public Component
