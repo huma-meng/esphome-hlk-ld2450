@@ -99,12 +99,12 @@ namespace esphome::ld2450
             if (this->available()) 
             {
                 uint8_t byte = this->read();
-                received_data.push_back(byte);          
-                if (received_data.size() >= 8)
+                uart_buffer.push_back(byte);          
+                if (uart_buffer.size() >= 8)
                 {
-                    if (memcmp(received_data.data(), radar_ack_header, 4) == 0)
+                    if (memcmp(uart_buffer.data(), radar_ack_header, 4) == 0)
                     {
-                        if (memcmp(&received_data[received_data.size() - 4], radar_ack_end, 4) == 0)
+                        if (memcmp(&uart_buffer[uart_buffer.size() - 4], radar_ack_end, 4) == 0)
                         {
                             ESP_LOGD("LD2450", "Received Radar ACK response.");
                             // --- DEBUG -----------------------
