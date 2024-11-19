@@ -87,6 +87,8 @@ private:
 
 
     // Outputs
+    bool uart_log_output = true;
+
     bool sensor_presence = false;
     uint8_t sensor_targets = 0;
 
