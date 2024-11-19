@@ -34,6 +34,8 @@ class LD2450 : public uart::UARTDevice, public Component
 {
     
 public:
+    LD2450();
+
     void setup() override;
     void loop() override;
 
@@ -63,6 +65,7 @@ private:
 
 private:
     // LD2450 specific
+    uint8_t targets_max = 3;
     bool sensor_connected = false;
     bool sensor_config_mode = false;
 
@@ -70,7 +73,7 @@ private:
 
     uint8_t firmware_version_ = 123;
 
-    std::vector<Target> targets(3);
+    std::vector<Target> target;
 
 
     // Debug
