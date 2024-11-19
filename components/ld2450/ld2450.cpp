@@ -145,27 +145,27 @@ namespace esphome::ld2450
             ESP_LOGD("LD2450", "Received --DATA-- frame");
 
             // Target 0 
-            target[0].x = 0 - (frame[4] + frame[5] * 256);
-            target[0].y = (frame[6] + frame[7] * 256) - 2^15;
-            target[0].speed = 0 - (frame[8] + frame[9] * 256);
-            target[0].resolution = frame[10] + frame[11] * 256;
+            targets[0].x = 0 - (frame[4] + frame[5] * 256);
+            targets[0].y = (frame[6] + frame[7] * 256) - 2^15;
+            targets[0].speed = 0 - (frame[8] + frame[9] * 256);
+            targets[0].resolution = frame[10] + frame[11] * 256;
 
             // Target 1
-            target[1].x = 0 - (frame[12] + frame[13] * 256);
-            target[1].y = (frame[14] + frame[15] * 256) - 2^15;
-            target[1].speed = 0 - (frame[16] + frame[17] * 256);
-            target[1].resolution = frame[18] + frame[19] * 256;
+            targets[1].x = 0 - (frame[12] + frame[13] * 256);
+            targets[1].y = (frame[14] + frame[15] * 256) - 2^15;
+            targets[1].speed = 0 - (frame[16] + frame[17] * 256);
+            targets[1].resolution = frame[18] + frame[19] * 256;
 
             // Target 2
-            target[2].x = 0 - (frame[20] + frame[21] * 256);
-            target[2].y = (frame[22] + frame[23] * 256) - 2^15;
-            target[2].speed = 0 - (frame[24] + frame[25] * 256);
-            target[2].resolution = frame[26] + frame[27] * 256;
+            targets[2].x = 0 - (frame[20] + frame[21] * 256);
+            targets[2].y = (frame[22] + frame[23] * 256) - 2^15;
+            targets[2].speed = 0 - (frame[24] + frame[25] * 256);
+            targets[2].resolution = frame[26] + frame[27] * 256;
 
             ESP_LOGD("LD2450", "t0: x %i - y %i - speed %i - res %i -- t1: x %i - y %i - speed %i - res %i -- t2: x %i - y %i - speed %i - res %i --",
-                target[0].x, target[0].y, target[0].speed, target[0].resolution,
-                target[1].x, target[1].y, target[1].speed, target[1].resolution,
-                target[2].x, target[2].y, target[2].speed, target[2].resolution,);
+                targets[0].x, targets[0].y, targets[0].speed, targets[0].resolution,
+                targets[1].x, targets[1].y, targets[1].speed, targets[1].resolution,
+                targets[2].x, targets[2].y, targets[2].speed, targets[2].resolution,);
         }
     }
 

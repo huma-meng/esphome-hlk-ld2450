@@ -70,7 +70,7 @@ private:
 
     uint8_t firmware_version_ = 123;
 
-    std::vector<Target> target(3);
+    std::vector<Target> targets(3);
 
 
     // Debug
