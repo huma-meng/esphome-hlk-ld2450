@@ -76,52 +76,28 @@ namespace esphome::ld2450
         // --------------------------------------------------------------------------------------
     }
 
+
+
+
     // TODO Check if sensor is online
     void LD2450::uart_receive(const std::vector<uint8_t> &frame)
     {
         // Check frame header (ack or data)
-        const uint8_t ack_header[4] = { 0xFD, 0xFC, 0xFB, 0xFA };
-        const uint8_t data_header[4] = { 0xAA, 0xFF, 0x03, 0x00 };
+        const uint8_t header_ack[4] = { 0xFD, 0xFC, 0xFB, 0xFA };
+        const uint8_t header_data[4] = { 0xAA, 0xFF, 0x03, 0x00 };
 
         // ACK frame
-        if (frame[0] == ack_header[0])
+        if (frame[0] == header_ack[0])
         {
             ESP_LOGD("LD2450", "Received --ACK-- frame");
+
             // Check config mode
-            // Config mode enable
-
-            
-            /*
-            if (frame[6] == config_mode_enable[0])
-            {
-                if (frame[7] == 0x00)
-                {
-                    ESP_LOGD("LD2450", "Config mode: ENABLE FAILED");
-                }
-                else if (frame[7] == 0x01)
-                {
-                    ESP_LOGD("LD2450", "Config mode: ENABLE SUCCESS");
-                }
-            }
-            // Config mode disable
-            else if (frame[6] == config_mode_enable[0])
-            {
-                if (frame[7] == 0x00)
-                {
-                    ESP_LOGD("LD2450", "Config mode: ENABLE FAILED");
-                }
-                else if (frame[7] == 0x01)
-                {
-                    ESP_LOGD("LD2450", "Config mode: ENABLE SUCCESS");
-                }
-            }
-            */
-
             constexpr uint8_t config_mode_enable[2] = { 0xFF, 0x00 };
             constexpr uint8_t config_mode_disable[2] = { 0xFE, 0x00 };
 
             switch (frame[6])
             {
+            // Config mode enable
             case config_mode_enable[0]:
                 if (frame[7] == 0x00)
                 {
@@ -132,7 +108,8 @@ namespace esphome::ld2450
                     ESP_LOGD("LD2450", "Config mode: ENABLE FAILED");
                 }
                 break;
-            
+
+            // Config mode disable
             case config_mode_disable[0]:
                 if (frame[7] == 0x00)
                 {
@@ -146,16 +123,16 @@ namespace esphome::ld2450
                 break;
             }
 
-            this->uart_print(frame);
-
+            this->print_uart(false, frame);
         }
 
         // Data frame
-        else if (frame[0] == data_header[0])
+        else if (frame[0] == header_data[0])
         {
             ESP_LOGD("LD2450", "Received --DATA-- frame");
         }
     }
+
 
 
 
