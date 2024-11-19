@@ -151,30 +151,58 @@ namespace esphome::ld2450
         {
             ESP_LOGD("LD2450", "Received --DATA-- frame");
 
-            // Target 0 
-            target[0].x = 0 - (frame[4] + frame[5] * 256);
-            target[0].y = (frame[6] + frame[7] * 256) - 32768;
-            target[0].speed = 0 - (frame[8] + frame[9] * 256);
-            target[0].resolution = frame[10] + frame[11] * 256;
-
+            // Target 0
+            if (frame[4] == 0x00 && frame[5] == 0x00 && frame[6] == 0x00 && frame[7] == 0x00)
+            {
+                target[0].x = 0;
+                target[0].y = 0;
+                target[0].speed = 0;
+                target[0].resolution = 0;
+            }
+            else
+            {
+                target[0].x = 0 - (frame[4] + frame[5] * 256);
+                target[0].y = (frame[6] + frame[7] * 256) - 32768;
+                target[0].speed = 0 - (frame[8] + frame[9] * 256);
+                target[0].resolution = frame[10] + frame[11] * 256;
+            }
+        
             // Target 1
-            target[1].x = 0 - (frame[12] + frame[13] * 256);
-            target[1].y = (frame[14] + frame[15] * 256) - 32768;
-            target[1].speed = 0 - (frame[16] + frame[17] * 256);
-            target[1].resolution = frame[18] + frame[19] * 256;
+            if (frame[12] == 0x00 && frame[13] == 0x00 && frame[14] == 0x00 && frame[15] == 0x00)
+            {
+                target[1].x = 0;
+                target[1].y = 0;
+                target[1].speed = 0;
+                target[1].resolution = 0;
+            }
+            else
+            {
+                target[1].x = 0 - (frame[12] + frame[13] * 256);
+                target[1].y = (frame[14] + frame[15] * 256) - 32768;
+                target[1].speed = 0 - (frame[16] + frame[17] * 256);
+                target[1].resolution = frame[18] + frame[19] * 256;
+            }
 
             // Target 2
-            target[2].x = 0 - (frame[20] + frame[21] * 256);
-            target[2].y = (frame[22] + frame[23] * 256) - 32768;
-            target[2].speed = 0 - (frame[24] + frame[25] * 256);
-            target[2].resolution = frame[26] + frame[27] * 256;
+            if (frame[20] == 0x00 && frame[21] == 0x00 && frame[22] == 0x00 && frame[23] == 0x00)
+            {
+                target[2].x = 0;
+                target[2].y = 0;
+                target[2].speed = 0;
+                target[2].resolution = 0;
+            }
+            else
+            {
+                target[2].x = 0 - (frame[20] + frame[21] * 256);
+                target[2].y = (frame[22] + frame[23] * 256) - 32768;
+                target[2].speed = 0 - (frame[24] + frame[25] * 256);
+                target[2].resolution = frame[26] + frame[27] * 256;
+            }
 
             ESP_LOGD("LD2450", "T0: x %d - y %d - speed %d - res %d -- T1: x %d - y %d - speed %d - res %d -- T2: x %d - y %d - speed %d - res %d",
                 target[0].x, target[0].y, target[0].speed, target[0].resolution,
                 target[1].x, target[1].y, target[1].speed, target[1].resolution,
-                target[2].x, target[2].y, target[2].speed, target[2].resolution);
-
-            
+                target[2].x, target[2].y, target[2].speed, target[2].resolution); 
         }
     }
 
