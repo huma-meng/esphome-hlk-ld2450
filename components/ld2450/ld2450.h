@@ -30,13 +30,9 @@ public:
 
 
 private:
-    // Debug
-    void print_uart(bool data_send, const std::vector<uint8_t> &data);
-
     // LD2450 specific
     void uart_send(uint8_t *cmd, const uint8_t *cmd_value = nullptr);
     void uart_receive(const std::vector<uint8_t> &frame);
-    // bool get_ack();
 
     void set_config_mode(bool enable);
     void set_baud_rate(BaudRate baud_rate);
@@ -53,10 +49,10 @@ private:
     void get_sensor_infos();
 
 
-private:
     // Debug
-    unsigned long last_time = 0;
+    void uart_print(bool data_send, const std::vector<uint8_t> &data);
 
+private:
     // LD2450 specific
     bool sensor_connected = false;
     bool sensor_config_mode = false;
@@ -64,6 +60,10 @@ private:
     uint16_t uart_timeout = 500;
 
     uint8_t firmware_version_ = 123;
+
+
+    // Debug
+    unsigned long last_time = 0;
 
 
 };

@@ -87,6 +87,65 @@ namespace esphome::ld2450
         if (frame[0] == ack_header[0])
         {
             ESP_LOGD("LD2450", "Received --ACK-- frame");
+            // Check config mode
+            // Config mode enable
+            const uint8_t config_mode_enable[2] = { 0xFF, 0x00 };
+            const uint8_t config_mode_disable[2] = { 0xFE, 0x00 };
+            
+            /*
+            if (frame[6] == config_mode_enable[0])
+            {
+                if (frame[7] == 0x00)
+                {
+                    ESP_LOGD("LD2450", "Config mode: ENABLE FAILED");
+                }
+                else if (frame[7] == 0x01)
+                {
+                    ESP_LOGD("LD2450", "Config mode: ENABLE SUCCESS");
+                }
+            }
+            // Config mode disable
+            else if (frame[6] == config_mode_enable[0])
+            {
+                if (frame[7] == 0x00)
+                {
+                    ESP_LOGD("LD2450", "Config mode: ENABLE FAILED");
+                }
+                else if (frame[7] == 0x01)
+                {
+                    ESP_LOGD("LD2450", "Config mode: ENABLE SUCCESS");
+                }
+            }
+            */
+
+            switch (frame[6])
+            {
+            case config_mode_enable[0]:
+                if (frame[7] == 0x00)
+                {
+                    ESP_LOGD("LD2450", "Config mode: ENABLE SUCCESS");
+                }
+                else if (frame[7] == 0x01)
+                {
+                    ESP_LOGD("LD2450", "Config mode: ENABLE FAILED");
+                }
+                break;
+            
+            case config_mode_enable[0]:
+                if (frame[7] == 0x00)
+                {
+                    ESP_LOGD("LD2450", "Config mode: DISABLE SUCCESS");
+                }
+                else if (frame[7] == 0x01)
+                {
+                    ESP_LOGD("LD2450", "Config mode: DISABLE FAILED");
+                }
+            default:
+                break;
+            }
+
+            this->uart_print(uart_buffer);
+
         }
 
         // Data frame
@@ -180,7 +239,7 @@ namespace esphome::ld2450
 
 
     // ----- DEBUG: UART data send debug --------------------------------------------------
-    void LD2450::print_uart(bool data_send, const std::vector<uint8_t> &uart_data)
+    void LD2450::uart_print(bool data_send, const std::vector<uint8_t> &uart_data)
     {
         std::string uart_data_str;
         for (size_t i = 0; i < uart_data.size(); ++i)
