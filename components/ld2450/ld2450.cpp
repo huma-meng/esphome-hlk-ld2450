@@ -8,6 +8,8 @@ namespace esphome::ld2450
         this->set_timeout(1000, [this]() { this->sensor_reboot(); });
     }
 
+
+    // TODO Check if sensor is online
     void LD2450::loop()
     {
         if (millis() - last_time >= 10000)
@@ -15,7 +17,6 @@ namespace esphome::ld2450
             this->set_config_mode(true);
             last_time = millis();
         }
-
 
         if (this->available()) 
         {
@@ -75,6 +76,7 @@ namespace esphome::ld2450
         // --------------------------------------------------------------------------------------
     }
 
+    // TODO Check if sensor is online
     void LD2450::uart_receive(const std::vector<uint8_t> &frame)
     {
         // Check frame header (ack or data)
