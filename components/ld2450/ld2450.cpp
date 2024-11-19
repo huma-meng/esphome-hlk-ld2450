@@ -42,11 +42,9 @@ namespace esphome::ld2450
                 uart_buffer.push_back(byte);
             }
             this->uart_receive(uart_buffer);
-
-            // --- DEBUG ----------------------------------------------------------------------------
-            // this->print_uart(false, uart_buffer);
-            // --------------------------------------------------------------------------------------
         }
+
+        process_data();
     }
 
 
@@ -149,8 +147,6 @@ namespace esphome::ld2450
         // X to the front, Y left/right (left = negative)
         else if (frame[0] == header_data[0])
         {
-            ESP_LOGD("LD2450", "Received --DATA-- frame");
-
             // Target 0
             if (frame[4] == 0x00 && frame[5] == 0x00 && frame[6] == 0x00 && frame[7] == 0x00)
             {
@@ -199,7 +195,7 @@ namespace esphome::ld2450
                 target[2].resolution = frame[26] + frame[27] * 256;
             }
 
-            ESP_LOGD("LD2450", "T0: x %d - y %d - speed %d - res %d -- T1: x %d - y %d - speed %d - res %d -- T2: x %d - y %d - speed %d - res %d",
+            ESP_LOGD("LD2450", "T0: x %d y %d speed %d res %d -- T1: x %d y %d speed %d res %d -- T2: x %d y %d speed %d res %d",
                 target[0].x, target[0].y, target[0].speed, target[0].resolution,
                 target[1].x, target[1].y, target[1].speed, target[1].resolution,
                 target[2].x, target[2].y, target[2].speed, target[2].resolution); 
@@ -274,6 +270,29 @@ namespace esphome::ld2450
     }
 
 
+
+    void LD2450::process_data()
+    {
+        // Precence variables
+        if (target[0].x == 0 && target[0].y == 0)
+        {
+            sensor_presence = false;
+            sensor_targets = 0;
+        }
+        else
+        {
+            sensor_presence = true;
+            sensor_targets = 1;
+            if (target[1].x != 0 && target[1].y != 0)
+            {
+                sensor_targets += sensor_targets;
+            }
+            if (target[2].x != 0 && target[2].y != 0)
+            {
+                sensor_targets += sensor_targets;
+            }           
+        }
+    }
 
     void LD2450::get_sensor_infos()
     {

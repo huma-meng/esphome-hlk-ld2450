@@ -30,6 +30,14 @@ struct Target
 };
 
 
+// TODO room
+// n points / hysteresis / room rounter
+
+
+// TODO zones
+// n point / hysteresis / zone counter
+
+
 class LD2450 : public uart::UARTDevice, public Component
 {
     
@@ -57,6 +65,8 @@ private:
     // TODO zone filtering and setting
 
     // Component
+    void process_data();
+
     void get_sensor_infos();
 
 
@@ -74,6 +84,17 @@ private:
     uint8_t firmware_version_ = 123;
 
     std::vector<Target> target;
+
+
+    // Outputs
+    bool sensor_presence = false;
+    uint8_t sensor_targets = 0;
+
+    bool room_presence = false;
+    uint8_t room_targets = 0;
+
+    // TODO dynamic zones
+    uint8_t zone_0_targets = 0;
 
 
     // Debug
