@@ -123,7 +123,7 @@ namespace esphome::ld2450
                 break;
             }
 
-            this->print_uart(false, frame);
+            this->uart_print(false, frame);
         }
 
         // Data frame
