@@ -14,7 +14,15 @@ namespace esphome::ld2450
     {
         if (millis() - last_time >= 10000)
         {
-            this->set_config_mode(true);
+            if (sensor_config_mode == false)
+            {
+                this->set_config_mode(true);
+            }
+            else if (sensor_config_mode == true)
+            {
+                this->set_config_mode(false);
+            }
+            
             last_time = millis();
         }
 
@@ -101,11 +109,13 @@ namespace esphome::ld2450
             case config_mode_enable[0]:
                 if (frame[7] == 0x00)
                 {
-                    ESP_LOGD("LD2450", "Config mode: ENABLE SUCCESS");
+                    sensor_config_mode = false;
+                    ESP_LOGD("LD2450", "Config mode: ENABLE FAILED");
                 }
                 else if (frame[7] == 0x01)
                 {
-                    ESP_LOGD("LD2450", "Config mode: ENABLE FAILED");
+                    sensor_config_mode = true;
+                    ESP_LOGD("LD2450", "Config mode: ENABLE SUCCESS");
                 }
                 break;
 
@@ -113,11 +123,13 @@ namespace esphome::ld2450
             case config_mode_disable[0]:
                 if (frame[7] == 0x00)
                 {
-                    ESP_LOGD("LD2450", "Config mode: DISABLE SUCCESS");
+                    sensor_config_mode = true;
+                    ESP_LOGD("LD2450", "Config mode: DISABLE FAILED");
                 }
                 else if (frame[7] == 0x01)
                 {
-                    ESP_LOGD("LD2450", "Config mode: DISABLE FAILED");
+                    sensor_config_mode = false;
+                    ESP_LOGD("LD2450", "Config mode: DISABLE SUCCESS");
                 }
             default:
                 break;
