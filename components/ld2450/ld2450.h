@@ -21,6 +21,15 @@ enum BaudRate
     BAUD_460800 = 0x08,
 };
 
+struct Target
+{
+    int16_t x;
+    int16_t y;
+    int16_t speed;
+    int16_t resolution;
+};
+
+
 class LD2450 : public uart::UARTDevice, public Component
 {
     
@@ -60,6 +69,8 @@ private:
     uint16_t uart_timeout = 500;
 
     uint8_t firmware_version_ = 123;
+
+    std::vector<Target> target(3);
 
 
     // Debug
