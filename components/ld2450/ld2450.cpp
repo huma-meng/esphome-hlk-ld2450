@@ -89,8 +89,7 @@ namespace esphome::ld2450
             ESP_LOGD("LD2450", "Received --ACK-- frame");
             // Check config mode
             // Config mode enable
-            const uint8_t config_mode_enable[2] = { 0xFF, 0x00 };
-            const uint8_t config_mode_disable[2] = { 0xFE, 0x00 };
+
             
             /*
             if (frame[6] == config_mode_enable[0])
@@ -118,6 +117,9 @@ namespace esphome::ld2450
             }
             */
 
+            const uint8_t config_mode_enable[2] = { 0xFF, 0x00 };
+            const uint8_t config_mode_disable[2] = { 0xFE, 0x00 };
+
             switch (frame[6])
             {
             case config_mode_enable[0]:
@@ -131,7 +133,7 @@ namespace esphome::ld2450
                 }
                 break;
             
-            case config_mode_enable[0]:
+            case config_mode_disable[0]:
                 if (frame[7] == 0x00)
                 {
                     ESP_LOGD("LD2450", "Config mode: DISABLE SUCCESS");
