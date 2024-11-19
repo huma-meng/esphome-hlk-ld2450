@@ -117,8 +117,8 @@ namespace esphome::ld2450
             }
             */
 
-            const uint8_t config_mode_enable[2] = { 0xFF, 0x00 };
-            const uint8_t config_mode_disable[2] = { 0xFE, 0x00 };
+            constexpr uint8_t config_mode_enable[2] = { 0xFF, 0x00 };
+            constexpr uint8_t config_mode_disable[2] = { 0xFE, 0x00 };
 
             switch (frame[6])
             {
@@ -146,7 +146,7 @@ namespace esphome::ld2450
                 break;
             }
 
-            this->uart_print(uart_buffer);
+            this->uart_print(frame);
 
         }
 
