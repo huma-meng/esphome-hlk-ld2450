@@ -175,6 +175,8 @@ namespace esphome::ld2450
                 target[0].x, target[0].y, target[0].speed, target[0].resolution,
                 target[1].x, target[1].y, target[1].speed, target[1].resolution,
                 target[2].x, target[2].y, target[2].speed, target[2].resolution); 
+
+                this->uart_print(false, frame);
             }
             // ---------------------------------------------------------------------------------------------------------------------------------------
         }
