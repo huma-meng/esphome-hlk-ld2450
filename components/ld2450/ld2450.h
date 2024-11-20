@@ -26,7 +26,7 @@ struct Target
     int16_t x;
     int16_t y;
     int16_t speed;
-    int16_t resolution;
+    uint16_t resolution;
 };
 
 
