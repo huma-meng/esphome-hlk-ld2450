@@ -162,7 +162,8 @@ namespace esphome::ld2450
                 } else {
                     target[i].x = 0 -(frame[offset + 4] + frame[offset + 5] * 256);
                     target[i].y = (frame[offset + 6] + frame[offset + 7] * 256) - 32768;
-                    target[i].speed = 0 -(frame[offset + 8] + frame[offset + 9] * 256);
+                    // target[i].speed = 0 -(frame[offset + 8] + frame[offset + 9] * 256);
+                    target[i].speed = static_cast<int16_t>((frame[offset + 9] << 8) | frame[offset + 8]);
                     target[i].resolution = frame[offset + 10] + frame[offset + 11] * 256;
                 }
             }
