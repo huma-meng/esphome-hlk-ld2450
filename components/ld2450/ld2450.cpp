@@ -163,22 +163,8 @@ namespace esphome::ld2450
                 } else {
                     target[i].x = static_cast<int16_t>((frame[offset + 5] << 8) | frame[offset + 4]) - ((frame[offset + 5] & 0x80) ? 0x8000 : 0);
                     target[i].y = static_cast<int16_t>((frame[offset + 7] << 8) | frame[offset + 6]) - (frame[offset + 7] & 0x80 ? 0x8000 : 0);
-                    // target[i].speed = static_cast<int16_t>((frame[offset + 9] << 8) | frame[offset + 8]) - ((frame[offset + 9] & 0x80) ? 0x8000 : 0);
-                    target[i].speed = static_cast<int16_t>((frame[offset + 9] << 8 | frame[offset + 8]) & 0x7FFF) * (frame[offset + 9] & 0x80 ? 1 : -1);
+                    target[i].speed = static_cast<int16_t>((frame[offset + 9] << 8 | frame[offset + 8]) & 0x7FFF) * (frame[offset + 9] & 0x80 ? -1 : 1);
                     target[i].resolution = static_cast<uint16_t>((frame[offset + 11] << 8) | frame[offset + 10]);
-
-                    // target[i].x = 0 -(frame[offset + 4] + frame[offset + 5] * 256);
-                    // target[i].x = static_cast<int16_t>((frame[offset + 5] << 8) | frame[offset + 4]);
-
-                    // target[i].y = (frame[offset + 6] + frame[offset + 7] * 256) - 32768;
-                    // target[i].y = static_cast<int16_t>((frame[offset + 7] << 8) | frame[offset + 6]) - (frame[offset + 7] & 0x80 ? 0x8000 : 0);
-
-                    // target[i].speed = 0 -(frame[offset + 8] + frame[offset + 9] * 256);
-                    // target[i].speed = (uint16_t)(frame[offset + 9] << 8) + frame[offset + 8];
-                    // target[i].speed = static_cast<int16_t>((frame[offset + 9] << 8) | frame[offset + 8]);
-
-                    // target[i].resolution = static_cast<uint16_t>((frame[offset + 11] << 8) | frame[offset + 10]);
-
 
                     // DEBUG
                     target[i + 1].x = frame[offset + 5] << 8 | frame[offset + 4];
