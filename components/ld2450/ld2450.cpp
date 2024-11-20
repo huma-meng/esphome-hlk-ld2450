@@ -4,7 +4,7 @@ namespace esphome::ld2450
 {
 
     LD2450::LD2450() :
-    target(targets_max)
+    target(targets_max)(target_values_smoothing)
     {
 
     }
@@ -165,21 +165,6 @@ namespace esphome::ld2450
                     target[i].y = static_cast<int16_t>((frame[offset + 7] << 8) | frame[offset + 6]) - (frame[offset + 7] & 0x80 ? 0x8000 : 0);
                     target[i].speed = static_cast<int16_t>((frame[offset + 9] << 8 | frame[offset + 8]) & 0x7FFF) * (frame[offset + 9] & 0x80 ? -1 : 1);
                     target[i].resolution = static_cast<uint16_t>((frame[offset + 11] << 8) | frame[offset + 10]);
-
-                    // DEBUG
-                    target[i + 1].x = frame[offset + 5] << 8 | frame[offset + 4];
-                    if (frame[offset + 5] & 0x80)
-                        target[i + 1].x = -target[i + 1].x + 0x8000;
-                    
-                    target[i + 1].y = (frame[offset + 7] << 8 | frame[offset + 6]);
-                    if (target[i + 1].y != 0)
-                        target[i + 1].y -= 0x8000;
-                    
-                    target[i + 1].speed = frame[offset + 9] << 8 | frame[offset + 8];
-                    if (frame[offset + 9] & 0x80)
-                        target[i + 1].speed = -target[i + 1].speed + 0x8000;
-                    
-                    target[i + 1].resolution = frame[offset + 11]  << 8 | frame[offset + 10] ;
                 }
             }
 

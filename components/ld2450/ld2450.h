@@ -86,6 +86,10 @@ private:
     std::vector<Target> target;
 
 
+    // AddOn specific
+    uint8_t target_values_smoothing = 3;
+
+
     // Outputs
     bool uart_log_output = true;
 
