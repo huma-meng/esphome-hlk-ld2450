@@ -19,20 +19,7 @@ namespace esphome::ld2450
     // TODO Check if sensor is online
     void LD2450::loop()
     {
-        if (millis() - last_time >= 10000)
-        {
-            if (sensor_config_mode == false)
-            {
-                //this->set_config_mode(true);
-            }
-            else if (sensor_config_mode == true)
-            {
-                //this->set_config_mode(false);
-            }
-            
-            last_time = millis();
-        }
-
+        // Receive UART frame
         if (this->available()) 
         {
             std::vector<uint8_t> uart_buffer;
@@ -44,7 +31,25 @@ namespace esphome::ld2450
             this->uart_receive(uart_buffer);
         }
 
-        process_data();
+
+        /*
+        if (millis() - last_time >= 10000)
+        {
+            if (sensor_config_mode == false)
+            {
+                this->set_config_mode(true);
+            }
+            else if (sensor_config_mode == true)
+            {
+                this->set_config_mode(false);
+            }
+            
+            last_time = millis();
+        }
+        */
+
+
+        // process_data();
     }
 
 
