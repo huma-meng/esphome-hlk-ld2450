@@ -6,8 +6,40 @@
 #include "esphome/components/uart/uart.h"
 
 
+#ifdef USE_BINARY_SENSOR
+#include "esphome/components/binary_sensor/binary_sensor.h"
+#endif
+
+#ifdef USE_BUTTON
+#include "esphome/components/button/button.h"
+#endif
+
+#ifdef USE_NUMBER
+#include "esphome/components/number/number.h"
+#endif
+
+#ifdef USE_SELECT
+#include "esphome/components/select/select.h"
+#endif
+
+#ifdef USE_SENSOR
+#include "esphome/components/sensor/sensor.h"
+#endif
+
+#ifdef USE_SWITCH
+#include "esphome/components/switch/switch.h"
+#endif
+
+#ifdef USE_TEXT_SENSOR
+#include "esphome/components/text_sensor/text_sensor.h"
+#endif
+
+
 namespace esphome::ld2450
 {
+
+// TODO command sets
+// TODO command value sets
 
 enum BaudRate
 {
@@ -40,11 +72,48 @@ struct Target
 
 class LD2450 : public uart::UARTDevice, public Component
 {
+
+#ifdef USE_BINARY_SENSOR
+    SUB_BINARY_SENSOR(sensor_presence)
+    SUB_BINARY_SENSOR(room_presence)
+    SUB_BINARY_SENSOR(zone_0_presence)
+#endif
+
+#ifdef USE_BUTTON
+    SUB_BUTTON(sensor_reboot)
+    SUB_BUTTON(sensor_factory_reset)
+#endif
+
+#ifdef USE_NUMBER
+    // sensor mounted rotation x / y / z
+#endif
+
+#ifdef USE_SELECT
+    SUB_SELECT(baud_rate)
+#endif
+
+#ifdef USE_SENSOR
+    SUB_SENSOR(sensor_target_count)
+    SUB_SENSOR(room_target_count)
+    SUB_SENSOR(zone_0_target_count)
+#endif
+
+#ifdef USE_SWITCH
+    SUB_SWITCH(multi_target_tracking)
+    SUB_SWITCH(bluetooth)
+#endif
+
+#ifdef USE_TEXT_SENSOR
+    SUB_TEXT_SENSOR(firmware_version)
+    SUB_TEXT_SENSOR(bluetooth_mac)
+#endif
+
     
 public:
     LD2450();
 
     void setup() override;
+    void dump_config() override;
     void loop() override;
 
 
@@ -75,7 +144,14 @@ private:
 
 private:
     // LD2450 specific
-    uint8_t targets_max = 3;
+    std::vector<Target> targets;
+    uint8_t targets_max_count = 3;
+
+    std::vector<int16_t>
+    uint8_t targets_smooting_window = 3;
+
+
+
     bool sensor_connected = false;
     bool sensor_config_mode = false;
 
@@ -83,24 +159,30 @@ private:
 
     uint8_t firmware_version_ = 123;
 
-    std::vector<Target> target;
+
 
 
     // AddOn specific
-    uint8_t target_values_smoothing = 3;
+    
 
 
     // Outputs
     bool uart_log_output = true;
 
+    // Sensor data
     bool sensor_presence = false;
-    uint8_t sensor_targets = 0;
+    uint8_t sensor_target_count = 0;
 
+    // Room data
     bool room_presence = false;
-    uint8_t room_targets = 0;
+    uint8_t room_target_count = 0;
 
+    // Zone data
     // TODO dynamic zones
+    bool zone_0_presence = false;
     uint8_t zone_0_targets = 0;
+    uint16_t zone_0_active_delay = 0;   // Time delay for activate zone
+    uint16_t zone_0_deactive_delay = 0; // Time delay for deactivate zone
 
 
     // Debug

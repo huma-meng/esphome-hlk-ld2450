@@ -4,7 +4,7 @@ namespace esphome::ld2450
 {
 
     LD2450::LD2450() :
-    target(targets_max)(target_values_smoothing)
+    targets(targets_max)
     {
 
     }
@@ -30,26 +30,6 @@ namespace esphome::ld2450
             }
             this->uart_receive(uart_buffer);
         }
-
-
-        /*
-        if (millis() - last_time >= 10000)
-        {
-            if (sensor_config_mode == false)
-            {
-                this->set_config_mode(true);
-            }
-            else if (sensor_config_mode == true)
-            {
-                this->set_config_mode(false);
-            }
-            
-            last_time = millis();
-        }
-        */
-
-
-        // process_data();
     }
 
 
@@ -151,20 +131,19 @@ namespace esphome::ld2450
         else if (frame[0] == header_data[0])
         {
             // Process the target data
-            // for (int i = 0; i < targets_max; ++i) {
-            for (int i = 0; i < 1; ++i) {
+            for (int i = 0; i < targets_max; ++i) {
                 int offset = i * 8;
 
                 if (frame[offset + 4] == 0x00 && frame[offset + 5] == 0x00 && frame[offset + 6] == 0x00 && frame[offset + 7] == 0x00) {
-                    target[i].x = 0;
-                    target[i].y = 0;
-                    target[i].speed = 0;
-                    target[i].resolution = 0;
+                    targets[i].x = 0;
+                    targets[i].y = 0;
+                    targets[i].speed = 0;
+                    targets[i].resolution = 0;
                 } else {
-                    target[i].x = static_cast<int16_t>((frame[offset + 5] << 8) | frame[offset + 4]) - ((frame[offset + 5] & 0x80) ? 0x8000 : 0);
-                    target[i].y = static_cast<int16_t>((frame[offset + 7] << 8) | frame[offset + 6]) - (frame[offset + 7] & 0x80 ? 0x8000 : 0);
-                    target[i].speed = static_cast<int16_t>((frame[offset + 9] << 8 | frame[offset + 8]) & 0x7FFF) * (frame[offset + 9] & 0x80 ? -1 : 1);
-                    target[i].resolution = static_cast<uint16_t>((frame[offset + 11] << 8) | frame[offset + 10]);
+                    targets[i].x = static_cast<int16_t>((frame[offset + 5] << 8) | frame[offset + 4]) - ((frame[offset + 5] & 0x80) ? 0x8000 : 0);
+                    targets[i].y = static_cast<int16_t>((frame[offset + 7] << 8) | frame[offset + 6]) - (frame[offset + 7] & 0x80 ? 0x8000 : 0);
+                    targets[i].speed = static_cast<int16_t>((frame[offset + 9] << 8 | frame[offset + 8]) & 0x7FFF) * (frame[offset + 9] & 0x80 ? -1 : 1);
+                    targets[i].resolution = static_cast<uint16_t>((frame[offset + 11] << 8) | frame[offset + 10]);
                 }
             }
 
@@ -172,11 +151,9 @@ namespace esphome::ld2450
             if (uart_log_output == true)
             {
                 ESP_LOGD("LD2450", "T0: X %d Y %d S %d R %d --- T1: X %d Y %d S %d R %d --- T2: X %d Y %d S %d R %d",
-                target[0].x, target[0].y, target[0].speed, target[0].resolution,
-                target[1].x, target[1].y, target[1].speed, target[1].resolution,
-                target[2].x, target[2].y, target[2].speed, target[2].resolution); 
-
-                this->uart_print(false, frame);
+                targets[0].x, targets[0].y, targets[0].speed, targets[0].resolution,
+                targets[1].x, targets[1].y, targets[1].speed, targets[1].resolution,
+                targets[2].x, targets[2].y, targets[2].speed, targets[2].resolution); 
             }
             // ---------------------------------------------------------------------------------------------------------------------------------------
         }
